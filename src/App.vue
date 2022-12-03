@@ -81,10 +81,6 @@ console.log(hoursTo.value)
 </template>
 
 <style>
-div {
-  display: block;
-}
-
 body {
   @apply bg-gray-100;
 }
