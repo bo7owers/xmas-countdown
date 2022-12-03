@@ -3,47 +3,45 @@ import CountdownHeader from '@/components/CountdownHeader.vue'
 import CountdownSegment from './components/CountdownSegment.vue'
 import { useNow } from '@vueuse/core'
 import { computed } from 'vue'
+let daylength = 1000 * 60 * 60 * 24
 
 const now = useNow()
 const christmas = new Date('12/25/2022 00:00:00')
-// computed props
-const daysTo = computed(() => {
-  let daylength = 1000 * 60 * 60 * 24
-  // get complete amount of time left till christmas
-  let fullChristmasDay = (christmas.getTime() - now.value.getTime()) / daylength
-  // round it to get a specific amount of days
-  let roundChristmasDate = Math.floor(fullChristmasDay)
-  return { fullChristmasDay, roundChristmasDate }
+// ! create individual computed props to keep reactivity hehe
+// get complete amount of time left till christmas
+const fullChristmasDay = computed(() => {
+  return (christmas.getTime() - now.value.getTime()) / daylength
 })
-// access the results from daysTo
-let fullDaysToChristmas = daysTo.value.fullChristmasDay
-let daysToChristmas = daysTo.value.roundChristmasDate
+const daysTo = computed(() => {
+  // round it to get a specific amount of days
+  return Math.floor(fullChristmasDay.value)
+})
+
+const fullChristmasHours = computed(() => {
+  // get full amount of hours left till christmass
+  return (fullChristmasDay.value - daysTo.value) * 24
+})
 
 const hoursTo = computed(() => {
-  // get full amount of hours left till christmass
-  let fullChristmasHours = (fullDaysToChristmas - daysToChristmas) * 24
   // round hours to get specific amount of days
-  let roundChristmasHours = Math.floor(fullChristmasHours)
-  return { fullChristmasHours, roundChristmasHours }
+  return Math.floor(fullChristmasHours.value)
 })
-let fullHoursToChristmas = hoursTo.value.fullChristmasHours
-let hoursToChristmas = hoursTo.value.roundChristmasHours
 
-const minutesTo = computed(() => {
+const fullChristmasMins = computed(() => {
   // get full amount of minutes left till christmas
-  let fullChristmasMins = (fullHoursToChristmas - hoursToChristmas) * 60
-  let roundChristmasMins = Math.floor(fullChristmasMins)
-  return { fullChristmasMins, roundChristmasMins }
+  return (fullChristmasHours.value - hoursTo.value) * 60
 })
-let fullMinsToChristmas = minutesTo.value.fullChristmasMins
-let minsToChristmas = minutesTo.value.roundChristmasMins
+const minutesTo = computed(() => {
+  return Math.floor(fullChristmasMins.value)
+})
+
+const fullChristmasSecs = computed(() => {
+  // get full amount of seconds till christmas
+  return (fullChristmasMins.value - minutesTo.value) * 60
+})
 
 const secondsTo = computed(() => {
-  // get full amount of seconds till christmas
-  let fullChristmasSecs = (fullMinsToChristmas - minsToChristmas) * 60
-  let roundChristmasSecs = Math.floor(fullChristmasSecs)
-
-  return roundChristmasSecs
+  return Math.floor(fullChristmasSecs.value)
 })
 </script>
 <template>
@@ -52,9 +50,9 @@ const secondsTo = computed(() => {
       <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]" aria-live="polite">
         <CountdownHeader />
         <main class="flex justify-center">
-          <CountdownSegment label="days" :number="daysToChristmas" />
-          <CountdownSegment label="hours" :number="hoursToChristmas" />
-          <CountdownSegment label="minutes" :number="minsToChristmas" />
+          <CountdownSegment label="days" :number="daysTo" />
+          <CountdownSegment label="hours" :number="hoursTo" />
+          <CountdownSegment label="minutes" :number="minutesTo" />
           <CountdownSegment label="seconds" :number="secondsTo" />
         </main>
       </div>
