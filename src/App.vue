@@ -57,9 +57,17 @@ console.log(hoursTo.value)
           <CountdownSegment label="seconds" :number="0" />
         </main>
       </div>
-      <h4 class="mt-10 text-gray-400 text-center text-sm">
-        This challenge brought to you by <a href="https://vueschool.io/" class="underline">Vue School</a>
-      </h4>
+      <p>
+        made by
+        <a
+          href="http://github.com/bo7owers"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline rounded mx-auto text-lime-700 hover:text-cyan-800 .focus:text-cyan-800 transition-colors"
+          title="opens in a new tab"
+          >bo7owers</a
+        >
+      </p>
     </div>
   </div>
 </template>
