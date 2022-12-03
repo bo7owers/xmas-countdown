@@ -6,9 +6,9 @@ import { computed } from 'vue'
 
 const now = useNow()
 const christmas = new Date('12/25/2022 00:00:00')
-let daylength = 1000 * 60 * 60 * 24
 // computed props
 const daysTo = computed(() => {
+  let daylength = 1000 * 60 * 60 * 24
   // get complete amount of time left till christmas
   let fullChristmasDay = (christmas.getTime() - now.value.getTime()) / daylength
   // round it to get a specific amount of days
@@ -50,8 +50,6 @@ const secondsTo = computed(() => {
   <div class="w-full h-full flex justify-center items-center p-10">
     <div>
       <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]" aria-live="polite">
-        <!-- {{ christmas }} | {{ now }} -->
-        <!-- {{ christmasDay }} -->
         <CountdownHeader />
         <main class="flex justify-center">
           <CountdownSegment label="days" :number="daysToChristmas" />
