@@ -12,20 +12,27 @@ let daylength = 1000 * 60 * 60 * 24
 
 // computed props
 const daysTo = computed(() => {
+  // get complete amount of time left till christmas
   let fullChristmasDay = (christmas.getTime() - now.value) / daylength
+  // round it to get a specific amount of days
   let roundChristmasDate = Math.floor((christmas.getTime() - now.value.getTime()) / daylength)
   return { fullChristmasDay, roundChristmasDate }
 })
+// access the results from daysTo
 let fullDaysToChristmas = daysTo.value.fullChristmasDay
 let daysToChristmas = daysTo.value.roundChristmasDate
 
 const hoursTo = computed(() => {
+  // get full amount of hours left till christmass
   let fullChristmasHours = (fullDaysToChristmas - daysToChristmas) * 24
+  // round hours to get specific amount of days
   let roundChristmasHours = Math.floor(fullChristmasHours)
   return { fullChristmasHours, roundChristmasHours }
 })
 let fullHoursToChristmas = hoursTo.value.fullChristmasHours
 let hoursToChristmas = hoursTo.value.roundChristmasHours
+
+
 console.log(hoursTo.value)
 </script>
 <template>
