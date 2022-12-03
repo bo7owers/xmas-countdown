@@ -8,28 +8,36 @@ const now = useNow()
 const christmas = new Date('12/25/2022 00:00:00')
 let daylength = 1000 * 60 * 60 * 24
 
-console.log(christmas.getTime() - now.value.getTime() / daylength)
+// console.log(christmas.getTime() - now.value.getTime() / daylength)
 
-const timeTo = computed(() => {
-  return (christmas.getTime() - now.value.getTime()) / daylength
-})
-
-console.log(timeTo)
-
+// computed props
 const daysTo = computed(() => {
-  return Math.floor(timeTo.value)
+  let fullChristmasDay = (christmas.getTime() - now.value) / daylength
+  let roundChristmasDate = Math.floor((christmas.getTime() - now.value.getTime()) / daylength)
+  return { fullChristmasDay, roundChristmasDate }
 })
+let fullDaysToChristmas = daysTo.value.fullChristmasDay
+let daysToChristmas = daysTo.value.roundChristmasDate
+
+const hoursTo = computed(() => {
+  let fullChristmasHours = (fullDaysToChristmas - daysToChristmas) * 24
+  let roundChristmasHours = Math.floor(fullChristmasHours)
+  return { fullChristmasHours, roundChristmasHours }
+})
+let fullHoursToChristmas = hoursTo.value.fullChristmasHours
+let hoursToChristmas = hoursTo.value.roundChristmasHours
+console.log(hoursTo.value)
 </script>
 <template>
   <div class="w-full h-full flex justify-center items-center p-10">
     <div>
       <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]">
         <!-- {{ christmas }} | {{ now }} -->
-        <!-- {{ daysTo }} -->
+        {{ christmasDay }}
         <CountdownHeader />
         <main class="flex justify-center">
-          <CountdownSegment label="days" :number="daysTo" />
-          <CountdownSegment label="hours" :number="0" />
+          <CountdownSegment label="days" :number="daysToChristmas" />
+          <CountdownSegment label="hours" :number="hoursToChristmas" />
           <CountdownSegment label="minutes" :number="0" />
           <CountdownSegment label="seconds" :number="0" />
         </main>
