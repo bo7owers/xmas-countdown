@@ -32,20 +32,28 @@ const hoursTo = computed(() => {
 let fullHoursToChristmas = hoursTo.value.fullChristmasHours
 let hoursToChristmas = hoursTo.value.roundChristmasHours
 
+const minutesTo = computed(() => {
+  // get full amount of minutes left till christmas
+  let fullChristmasMins = (fullHoursToChristmas - hoursToChristmas) * 60
+  let roundChristmasMins = Math.floor(fullChristmasMins)
+  return { fullChristmasMins, roundChristmasMins }
+})
+let fullMinsToChristmas = minutesTo.value.fullChristmasMins
+let minsToChristmas = minutesTo.value.roundChristmasMins
 
 console.log(hoursTo.value)
 </script>
 <template>
   <div class="w-full h-full flex justify-center items-center p-10">
     <div>
-      <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]">
+      <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]" aria-live="polite">
         <!-- {{ christmas }} | {{ now }} -->
         {{ christmasDay }}
         <CountdownHeader />
         <main class="flex justify-center">
           <CountdownSegment label="days" :number="daysToChristmas" />
           <CountdownSegment label="hours" :number="hoursToChristmas" />
-          <CountdownSegment label="minutes" :number="0" />
+          <CountdownSegment label="minutes" :number="minsToChristmas" />
           <CountdownSegment label="seconds" :number="0" />
         </main>
       </div>
