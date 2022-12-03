@@ -3,66 +3,75 @@ import CountdownHeader from '@/components/CountdownHeader.vue'
 import CountdownSegment from './components/CountdownSegment.vue'
 import { useNow } from '@vueuse/core'
 import { computed } from 'vue'
+let daylength = 1000 * 60 * 60 * 24
+
 const now = useNow()
-
 const christmas = new Date('12/25/2022 00:00:00')
-
-const days = computed(() => {
-  const one_day = 1000 * 60 * 60 * 24
-  return (christmas.getTime() - now.value.getTime()) / one_day
+// ! create individual computed props to keep reactivity hehe
+// get complete amount of time left till christmas
+const fullChristmasDay = computed(() => {
+  return (christmas.getTime() - now.value.getTime()) / daylength
 })
-const daysRounded = computed(() => {
-  return Math.floor(days.value)
-})
-
-const hours = computed(() => {
-  return 24 * (days.value - daysRounded.value)
+const daysTo = computed(() => {
+  // round it to get a specific amount of days
+  return Math.floor(fullChristmasDay.value)
 })
 
-const hoursRounded = computed(() => {
-  return Math.floor(hours.value)
+const fullChristmasHours = computed(() => {
+  // get full amount of hours left till christmass
+  return (fullChristmasDay.value - daysTo.value) * 24
 })
 
-const minutes = computed(() => {
-  return 60 * (hours.value - hoursRounded.value)
+const hoursTo = computed(() => {
+  // round hours to get specific amount of days
+  return Math.floor(fullChristmasHours.value)
 })
 
-const minutesRounded = computed(() => {
-  return Math.floor(minutes.value)
+const fullChristmasMins = computed(() => {
+  // get full amount of minutes left till christmas
+  return (fullChristmasHours.value - hoursTo.value) * 60
+})
+const minutesTo = computed(() => {
+  return Math.floor(fullChristmasMins.value)
 })
 
-const seconds = computed(() => {
-  return 60 * (minutes.value - minutesRounded.value)
+const fullChristmasSecs = computed(() => {
+  // get full amount of seconds till christmas
+  return (fullChristmasMins.value - minutesTo.value) * 60
 })
 
-const secondsRounded = computed(() => {
-  return Math.floor(seconds.value)
+const secondsTo = computed(() => {
+  return Math.floor(fullChristmasSecs.value)
 })
 </script>
 <template>
   <div class="w-full h-full flex justify-center items-center p-10">
     <div>
-      <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]">
+      <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]" aria-live="polite">
         <CountdownHeader />
         <main class="flex justify-center">
-          <CountdownSegment label="days" :number="daysRounded" />
-          <CountdownSegment label="hours" :number="hoursRounded" />
-          <CountdownSegment label="minutes" :number="minutesRounded" />
-          <CountdownSegment label="seconds" :number="secondsRounded" />
+          <CountdownSegment label="days" :number="daysTo" />
+          <CountdownSegment label="hours" :number="hoursTo" />
+          <CountdownSegment label="minutes" :number="minutesTo" />
+          <CountdownSegment label="seconds" :number="secondsTo" />
         </main>
       </div>
-      <h4 class="mt-10 text-gray-400 text-center text-sm">
-        This challenge brought to you by <a href="https://vueschool.io/" class="underline">Vue School</a>
-      </h4>
+      <p>
+        made by
+        <a
+          href="http://github.com/bo7owers"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline rounded mx-auto text-lime-700 hover:text-cyan-800 .focus:text-cyan-800 transition-colors"
+          title="opens in a new tab"
+          >bo7owers</a
+        >
+      </p>
     </div>
   </div>
 </template>
 
 <style>
-div {
-  display: block;
-}
-
 body {
   @apply bg-gray-100;
 }
