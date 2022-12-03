@@ -7,15 +7,12 @@ import { computed } from 'vue'
 const now = useNow()
 const christmas = new Date('12/25/2022 00:00:00')
 let daylength = 1000 * 60 * 60 * 24
-
-// console.log(christmas.getTime() - now.value.getTime() / daylength)
-
 // computed props
 const daysTo = computed(() => {
   // get complete amount of time left till christmas
-  let fullChristmasDay = (christmas.getTime() - now.value) / daylength
+  let fullChristmasDay = (christmas.getTime() - now.value.getTime()) / daylength
   // round it to get a specific amount of days
-  let roundChristmasDate = Math.floor((christmas.getTime() - now.value.getTime()) / daylength)
+  let roundChristmasDate = Math.floor(fullChristmasDay)
   return { fullChristmasDay, roundChristmasDate }
 })
 // access the results from daysTo
@@ -46,23 +43,21 @@ const secondsTo = computed(() => {
   let fullChristmasSecs = (fullMinsToChristmas - minsToChristmas) * 60
   let roundChristmasSecs = Math.floor(fullChristmasSecs)
 
-  return { fullChristmasSecs, roundChristmasSecs }
+  return roundChristmasSecs
 })
-let secsToChristmas = secondsTo.value.roundChristmasSecs
-console.log(hoursTo.value)
 </script>
 <template>
   <div class="w-full h-full flex justify-center items-center p-10">
     <div>
       <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]" aria-live="polite">
         <!-- {{ christmas }} | {{ now }} -->
-        {{ christmasDay }}
+        <!-- {{ christmasDay }} -->
         <CountdownHeader />
         <main class="flex justify-center">
           <CountdownSegment label="days" :number="daysToChristmas" />
           <CountdownSegment label="hours" :number="hoursToChristmas" />
           <CountdownSegment label="minutes" :number="minsToChristmas" />
-          <CountdownSegment label="seconds" :number="secsToChristmas" />
+          <CountdownSegment label="seconds" :number="secondsTo" />
         </main>
       </div>
       <p>
