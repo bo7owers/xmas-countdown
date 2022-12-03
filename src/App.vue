@@ -11,7 +11,13 @@ let daylength = 1000 * 60 * 60 * 24
 console.log(christmas.getTime() - now.value.getTime() / daylength)
 
 const timeTo = computed(() => {
-  return christmas.getTime() - now.value.getTime() / daylength
+  return (christmas.getTime() - now.value.getTime()) / daylength
+})
+
+console.log(timeTo)
+
+const daysTo = computed(() => {
+  return Math.floor(timeTo.value)
 })
 </script>
 <template>
@@ -19,10 +25,10 @@ const timeTo = computed(() => {
     <div>
       <div class="shadow-md relative bg-white p-5 rounded-lg border-gray-100 border-[1px]">
         <!-- {{ christmas }} | {{ now }} -->
-        {{ timeTo }}
+        <!-- {{ daysTo }} -->
         <CountdownHeader />
         <main class="flex justify-center">
-          <CountdownSegment label="days" :number="0" />
+          <CountdownSegment label="days" :number="daysTo" />
           <CountdownSegment label="hours" :number="0" />
           <CountdownSegment label="minutes" :number="0" />
           <CountdownSegment label="seconds" :number="0" />
